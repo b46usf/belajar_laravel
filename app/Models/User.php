@@ -43,4 +43,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function eloUser() {
+        return $this->hasMany('App\Models\eloCust','uniqID_user','uniqID_Customer'); 
+    }
+
+    public function eloAdr() {
+        return $this->hasMany('App\Models\eloAdr','id_customers','uniqID_Customer'); 
+    }
+
+    public function eloRek() {
+        return $this->hasMany('App\Models\eloRek','id_customers','uniqID_Customer');
+    }
+
+    public function eloCustImg() {
+        return $this->hasMany('App\Models\eloCustImg','id_customers','uniqID_Customer');
+    }
 }
