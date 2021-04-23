@@ -93,15 +93,18 @@ class AuthController extends Controller
         }
   
         $user = new User;
-        $user->uniqID_user = Str::uuid();
-        $user->name = ucwords(strtolower($request->name));
-        $user->email = strtolower($request->email);
+        $uniqID = Str::uuid();
+        $email  = strtolower($request->email);
+        $name   = ucwords(strtolower($request->name));
+        $user->uniqID_user = $uniqID;
+        $user->name = $name;
+        $user->email = $email;
         $user->password = Hash::make($request->password);
         $user->email_verified_at = \Carbon\Carbon::now();
         $dataCustomer   = [
-            'uniqID_Customer'   => $user->uniqID_user,
-            'email_customer'    => $user->email,
-            'nama_customer'     => $user->name,
+            'uniqID_Customer'   => $uniqID,
+            'email_customer'    => $email,
+            'nama_customer'     => $name,
         ];
         $dataID     = [
             'id_customers'  => $uniqID,
@@ -126,5 +129,5 @@ class AuthController extends Controller
         Auth::logout(); // menghapus session yang aktif
         return redirect()->route('login');
     }
-    
+
 }
