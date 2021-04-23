@@ -91,7 +91,6 @@ class AuthController extends Controller
         if($validator->fails()){
             return redirect()->back()->withErrors($validator)->withInput($request->all);
         }
-  
         $user = new User;
         $uniqID = Str::uuid();
         $email  = strtolower($request->email);
@@ -109,18 +108,25 @@ class AuthController extends Controller
         $dataID     = [
             'id_customers'  => $uniqID,
         ];
-        $insertCustomer =   $user->eloUser()->create($dataCustomer);
-        $insertAlamat   =   $user->eloAdr()->create($dataID);
-        $insertRekening =   $user->eloRek()->create($dataID);
-        $insertImage    =   $user->eloCustImg()->create($dataID);
-        $simpan = $user->save();
-  
-        if($simpan){
-            Session::flash('success', 'Register berhasil! Silahkan login untuk mengakses data');
-            return redirect()->route('login');
-        } else {
-            Session::flash('errors', ['' => 'Register gagal! Silahkan ulangi beberapa saat lagi']);
+        // mengecek customer yg sudah ada by email
+        $check  =   $user->where('email','=',$email);
+        if ($check->count() > 0) {
+            Session::flash('errors', ['' => 'Register gagal! Silahkan Email Sudah Terdaftar']);
             return redirect()->route('register');
+        } else {
+            $insertCustomer =   $user->eloUser()->create($dataCustomer);
+            $insertAlamat   =   $user->eloAdr()->create($dataID);
+            $insertRekening =   $user->eloRek()->create($dataID);
+            $insertImage    =   $user->eloCustImg()->create($dataID);
+            $simpan = $user->save();
+    
+            if($simpan){
+                Session::flash('success', 'Register berhasil! Silahkan login untuk mengakses data');
+                return redirect()->route('login');
+            } else {
+                Session::flash('errors', ['' => 'Register gagal! Silahkan ulangi beberapa saat lagi']);
+                return redirect()->route('register');
+            }
         }
     }
   
