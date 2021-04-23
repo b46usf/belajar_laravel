@@ -45,7 +45,7 @@ class User extends Authenticatable
     ];
 
     public function eloUser() {
-        return $this->hasMany('App\Models\eloCust','uniqID_user','uniqID_Customer'); 
+        return $this->hasMany('App\Models\eloCust','uniqID_Customer','uniqID_user'); 
     }
 
     public function eloAdr() {
