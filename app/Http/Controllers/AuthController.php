@@ -1,18 +1,16 @@
 <?php
-  
+
 namespace App\Http\Controllers;
-  
+
 use Illuminate\Http\Request;
-  
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
-use App\Models\eloCust;
-  
-  
+
 class AuthController extends Controller
 {
     public function showFormLogin()
@@ -100,6 +98,18 @@ class AuthController extends Controller
         $user->email = strtolower($request->email);
         $user->password = Hash::make($request->password);
         $user->email_verified_at = \Carbon\Carbon::now();
+        $dataCustomer   = [
+            'uniqID_Customer'   => $user->uniqID_user,
+            'email_customer'    => $user->email,
+            'nama_customer'     => $user->name,
+        ];
+        $dataID     = [
+            'id_customers'  => $uniqID,
+        ];
+        $insertCustomer =   $user->eloUser()->create($dataCustomer);
+        $insertAlamat   =   $user->eloAdr()->create($dataID);
+        $insertRekening =   $user->eloRek()->create($dataID);
+        $insertImage    =   $user->eloCustImg()->create($dataID);
         $simpan = $user->save();
   
         if($simpan){
@@ -116,4 +126,5 @@ class AuthController extends Controller
         Auth::logout(); // menghapus session yang aktif
         return redirect()->route('login');
     }
+    
 }
