@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
+use App\Models\eloCust;
   
   
 class AuthController extends Controller
@@ -93,6 +95,7 @@ class AuthController extends Controller
         }
   
         $user = new User;
+        $user->uniqID_user = Str::uuid();
         $user->name = ucwords(strtolower($request->name));
         $user->email = strtolower($request->email);
         $user->password = Hash::make($request->password);
