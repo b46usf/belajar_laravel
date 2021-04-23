@@ -35,12 +35,9 @@ class eloCustController extends Controller {
                 'uniqID_Customer' 	=> $values->uniqID_Customer,
                 'email_customer' 	=> $values->email_customer,
                 'nama_customer' 	=> $values->nama_customer,
-                'bod_customer'      => $values->bod_customer,
-                'phone_customer' 	=> $values->phone_customer,
-                'alamat'            => collect($values->elo_adr[0])->get('alamat'),
-                'bank_rekening'     => collect($values->elo_rek[0])->get('bank_rekening'),
-                'nomor_rekening'    => collect($values->elo_rek[0])->get('nomor_rekening'),
-                
+                // 'alamat'            => collect($values->elo_adr[0])->get('alamat'),
+                // 'bank_rekening'     => collect($values->elo_rek[0])->get('bank_rekening'),
+                // 'nomor_rekening'    => collect($values->elo_rek[0])->get('nomor_rekening'),
             ];
         });
         if($konsumen->count() > 0) { 

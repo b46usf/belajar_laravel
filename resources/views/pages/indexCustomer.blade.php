@@ -11,24 +11,21 @@
         <div class="table-responsive">
           <table style="width: 100%;" id="tabCustomer" data-action="/customer/table" class="table table-md table-hover table-striped table-bordered">
             <thead><tr>
-                <th scope="col">#</th>
+                <th scope="col">No</th>
                 <th scope="col">Email</th>
                 <th scope="col">Name</th>
-                <th scope="col">Alamat</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Bank</th>
                 <th scope="col">Action</th>
             </tr></thead>
             <tbody>
+            @php
+            $i=1;
+            @endphp
             @if (count($konsumen) > 0 )
             @foreach($konsumen as $k)
             <tr>
-              <td>{{ $k->uniqID_Customer }}</td>
+              <td>{{ $i++ }}</td>
               <td>{{ $k->email_customer }}</td>
               <td>{{ $k->nama_customer }}</td>
-              <td>{{ $k->alamat }}</td>
-              <td>{{ $k->phone_customer }}</td>
-              <td>{{ $k->bank_rekening }}</td>
               <td>
                 <a href="#" data-type="editCustomer" data-action="edit" data-id="{{ $k->uniqID_Customer }}">Edit</a> ||
                 <a href="#" data-type="deleteCustomer" data-action="delete" data-id="{{ $k->uniqID_Customer }}">Delete</a>
