@@ -13,7 +13,7 @@ if (count($konsumen) > 0 ) {
     $valbod     = $k->bod_customer;
     $valnorek   = $k->nomor_rekening;
     $valbank    = $k->bank_rekening;
-    $valimage   = '../../'.$k->file_location.'/'.$k->file_image;
+    $valimage   = ($k->file_location=='')? '../../assets/img/camera-add.png':'../../'.$k->file_location.'/'.$k->file_image;
   }
 } else {
     $valID      = '';
