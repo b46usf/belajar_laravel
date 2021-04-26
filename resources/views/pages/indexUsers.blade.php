@@ -4,7 +4,7 @@
   <div class="col-md-12 mt-5">
     <div class="card">
       <div class="card-header">
-        <h3>Data User</h3>
+        <h2>Data Users Management</h2>
       </div>
       <div class="card-body">
       <a href="#" data-action="/home"><< Back</a> <!--|| <a href="#" data-action="create">Add</a>--> || <a href="#" data-action="/user/trash">Trashed</a>
@@ -22,14 +22,20 @@
             @php
             $i=1;
             @endphp
-            @if (count($user) > 0 )
-            @foreach($user as $usr)
+            @if (count($data) > 0 )
+            @foreach($data as $key => $usr)
             <tr>
               <td>{{ $i++ }}</td>
-              <td>{{ $usr->email_user }}</td>
-              <td>{{ $usr->nama_user }}</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td>{{ $usr->email }}</td>
+              <td>{{ $usr->name }}</td>
+              <td>
+                @if(!empty($usr->getRoleNames()))
+                    @foreach($usr->getRoleNames() as $v)
+                        <label class="badge badge-success">{{ $v }}</label>
+                    @endforeach
+                @endif              
+              </td>
+              <td>{{ ($usr->device_token=='') ? 'Belum Aktif':'Sudah Aktif' }}</td>
               <td>
                 <a href="#" data-type="editCustomer" data-action="edit" data-id="{{ $usr->uniqID_user }}">Edit</a> ||
                 <a href="#" data-type="deleteCustomer" data-action="delete" data-id="{{ $usr->uniqID_user }}">Delete</a>
