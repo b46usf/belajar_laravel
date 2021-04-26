@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -119,6 +121,7 @@ class AuthController extends Controller
             $insertRekening =   $user->eloRek()->create($dataID);
             $insertImage    =   $user->eloCustImg()->create($dataID);
             $simpan = $user->save();
+            $user->assignRole('user');
     
             if($simpan){
                 Session::flash('success', 'Register berhasil! Silahkan login untuk mengakses data');
