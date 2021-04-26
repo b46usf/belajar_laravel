@@ -21,9 +21,37 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $data = User::orderBy('id','DESC')->paginate(5);
-        return view('users.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        // $data = User::orderBy('id','DESC')->paginate(5);
+        // return view('users.index',compact('data'))
+        //     ->with('i', ($request->input('page', 1) - 1) * 5);
+        $currentURL = $request->segment(count(request()->segments()));
+        // mengambil data user dengan eloquent ORM
+        if ($currentURL=='trash') {
+            $user   = User::orderBy('id','DESC')->onlyTrashed()->get();
+            $laman  = 'pages/trashedUsers';
+        } else {
+            $user   = User::orderBy('id','DESC')->get();
+            $laman  = 'pages/indexUsers';
+        }
+        // mengubah ke array
+        $data       = $user->toArray();
+        // mengubah ke objek
+        $object     = json_decode(json_encode($data),FALSE);
+        // passing data
+        $collection = collect($object)->map(function ($values) {
+            return [
+                'uniqID_user' 	=> $values->uniqID_user,
+                'email_user' 	=> $values->email,
+                'nama_user' 	=> $values->name,
+                
+            ];
+        });
+        if($user->count() > 0) { 
+        //mengirim data user ke view index
+    	    return view($laman,['user' => json_decode(json_encode($collection),FALSE)]);
+        } else { 
+            return view($laman,['user' => array()]);
+        }
     }
     
     /**

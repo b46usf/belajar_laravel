@@ -22,17 +22,17 @@
             @php
             $i=1;
             @endphp
-            @if (count($konsumen) > 0 )
-            @foreach($konsumen as $k)
+            @if (count($user) > 0 )
+            @foreach($user as $usr)
             <tr>
               <td>{{ $i++ }}</td>
-              <td>{{ $k->email_customer }}</td>
-              <td>{{ $k->nama_customer }}</td>
-              <td>{{ $k->email_customer }}</td>
-              <td>{{ $k->nama_customer }}</td>
+              <td>{{ $usr->email_user }}</td>
+              <td>{{ $usr->nama_user }}</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
               <td>
-                <a href="#" data-type="editCustomer" data-action="edit" data-id="{{ $k->uniqID_Customer }}">Edit</a> ||
-                <a href="#" data-type="deleteCustomer" data-action="delete" data-id="{{ $k->uniqID_Customer }}">Delete</a>
+                <a href="#" data-type="editCustomer" data-action="edit" data-id="{{ $usr->uniqID_user }}">Edit</a> ||
+                <a href="#" data-type="deleteCustomer" data-action="delete" data-id="{{ $usr->uniqID_user }}">Delete</a>
               </td>
             </tr>
             @endforeach
