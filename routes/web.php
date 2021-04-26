@@ -26,8 +26,8 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('register', [AuthController::class, 'showFormRegister'])->name('register');
 Route::post('register', [AuthController::class, 'register']);
 Route::group(['middleware' => 'auth'], function () {
-    Route::resource('roles', RoleController::class);
-    Route::resource('user/index', [UserController::class, 'index'])->name('user');
+    Route::get('roles/index', [RoleController::class, 'index'])->name('role');
+    Route::get('user/index', [UserController::class, 'index'])->name('user');
     Route::get('customer/index', [eloCustController::class, 'index'])->name('customer');
     Route::get('customer/trash', [eloCustController::class, 'index'])->name('trashed');
     Route::post('customer/restore', [eloCustController::class, 'restore']);
