@@ -11,7 +11,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav ms-auto">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link active" aria-current="page" href="#" data-action="/home">Home</a>
                 <a class="nav-link" href="#" data-action="/customer/index">Customer</a>
                 <a class="nav-link" href="#" data-action="/user/index">User</a>
                 <a class="nav-link" href="#" data-action="/roles/index">Roles</a>
