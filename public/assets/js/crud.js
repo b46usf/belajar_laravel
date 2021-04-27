@@ -281,3 +281,9 @@ $("a").click(function (event) {
         }
     }
 });
+
+$(".checkall").click(function () {
+    var idRole = $(this).attr("id");
+    var row = $("#" + idRole).closest("tr");
+    $("td input:checkbox", row).prop("checked", this.checked);
+});

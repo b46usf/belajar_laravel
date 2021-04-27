@@ -22,21 +22,27 @@
             <table style="width: 100%;" id="tabFormRoles" data-action="/roles/table" class="table table-md table-hover table-striped table-bordered">
                 <thead><tr>
                     <th scope="col">Page Name</th>
+                    <th scope="col">All Roles</th>
                     <th scope="col">Create</th>
                     <th scope="col">Read</th>
                     <th scope="col">Update</th>
                     <th scope="col">Delete</th>
                 </tr></thead>
                 <tbody>
-                
+                @if (count($data) > 0 )
+                @foreach ($data as $key => $pageRoles)
                 <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
+                <td>{{ $pageRoles->name }}</td>
+                <td><input type="checkbox" class="checkall" name="{{ $pageRoles->name }}-role-all" id="{{ $pageRoles->name }}-role-all" value="{{ $pageRoles->name }}-all"></td>
+                <td><input type="checkbox" name="{{ $pageRoles->name }}-role-create" id="{{ $pageRoles->name }}-role-create" value="{{ $pageRoles->name }}-create"></td>
+                <td><input type="checkbox" name="{{ $pageRoles->name }}-role-read" id="{{ $pageRoles->name }}-role-read" value="{{ $pageRoles->name }}-read"></td>
+                <td><input type="checkbox" name="{{ $pageRoles->name }}-role-update" id="{{ $pageRoles->name }}-role-update" value="{{ $pageRoles->name }}-update"></td>
+                <td><input type="checkbox" name="{{ $pageRoles->name }}-role-delete" id="{{ $pageRoles->name }}-role-delete" value="{{ $pageRoles->name }}-delete"></td>
                 </tr>
-                
+                @endforeach
+                @else
+                <tr><td colspan="5" align="center">Data Tidak Ditemukan</td></tr>
+                @endif
                 </tbody>
             </table>
             </div>

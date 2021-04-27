@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\Pages;
 use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
@@ -42,7 +43,13 @@ class RoleController extends Controller
     public function create()
     {
         $permission = Permission::get();
-        return view('pages.formRoles',compact('permission'));
+        $pages      = Pages::get();
+        if($permission->count() > 0) { 
+            $data   =   $permission;
+        } else {
+            $data   =   $pages;
+        }
+        return view('pages.formRoles',compact('data'));
     }
     
     /**
