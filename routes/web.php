@@ -32,6 +32,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('customer/trash', [eloCustController::class, 'index'])->name('trashed');
     Route::post('customer/restore', [eloCustController::class, 'restore']);
     Route::post('customer/truedelete', [eloCustController::class, 'truedelete']);
+    Route::post('roles/pages', [RoleController::class, 'addPages']);
     Route::resource('roles', RoleController::class);
     Route::resource('customer', eloCustController::class);
     Route::get('home', [HomeController::class, 'index'])->name('home');

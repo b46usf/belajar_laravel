@@ -61,16 +61,28 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:roles,name',
+            'inputName' => 'required|unique:roles,name',
             'permission' => 'required',
         ]);
     
-        $role = Role::create(['name' => $request->input('name')]);
-        $role->syncPermissions($request->input('permission'));
+        // $role = Role::create(['name' => $request->input('name')]);
+        // $role->syncPermissions($request->input('permission'));
     
-        return redirect()->route('roles.index')
-                        ->with('success','Role created successfully');
+        // return redirect()->route('roles.index')
+        //                 ->with('success','Role created successfully');
     }
+    public function addPages(Request $request)
+    {
+        $check      = Pages::where('name','=',ucwords($request->input('inputNamePages')));
+        if ($check->count() > 0) {
+            $response       =   array('status' => 400,'message' => 'Data is store.','success' => 'Error','location' => '/roles/create');
+        } else {
+            $pages      = Pages::create(['name' => ucwords($request->input('inputNamePages')),'url' => $request->input('inputUrlPages')]);
+            $response   = array('status' => 200,'message' => 'Save Success.','success' => 'OK','location' => '/roles/create');
+        }
+        echo json_encode($response);
+    }
+
     /**
      * Display the specified resource.
      *

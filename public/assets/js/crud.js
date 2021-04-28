@@ -5,18 +5,28 @@ $(".btn-save").click(function (event) {
         $("form").attr("action", "/customer/update");
         $(this).text("Save");
     } else {
-        var form = $("form");
-        if (form[0].checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        } else {
-            event.preventDefault();
-            save(form.attr("id"));
-        }
-        form.addClass("was-validated");
+        var idform = $(this).closest(".card").find("form").attr("id");
+        var form = $("#" + idform);
+        validateForm(event, form);
     }
 });
 
+$(".btn-spages").click(function (event) {
+    var idform = $(this).closest(".modal").find("form").attr("id");
+    var form = $("#" + idform);
+    validateForm(event, form);
+});
+
+function validateForm(event, form) {
+    if (form[0].checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+    } else {
+        event.preventDefault();
+        save(form.attr("id"));
+    }
+    form.addClass("was-validated");
+}
 $(document).on("click", ".btn-update", function (event) {
     event.preventDefault();
     var dataParam = $(this).data("id");
@@ -31,12 +41,12 @@ $(document).on("click", ".btn-update", function (event) {
 function save(idform) {
     var getUrl = window.location;
     var urLoc = getUrl.pathname.split("/")[3];
+    var action = $("#" + idform).attr("action");
     var dataParam = new FormData($("#" + idform)[0]);
     if (urLoc == "edit") {
-        var action = "/customer/" + getUrl.pathname.split("/")[2];
+        action = action + "/" + getUrl.pathname.split("/")[2];
         dataParam.append("_method", "PATCH");
     } else {
-        var action = "/customer";
         dataParam.append("_method", "POST");
     }
     $.ajax({
@@ -50,14 +60,28 @@ function save(idform) {
         processData: false,
         contentType: false,
         success: function (response) {
+            $("#" + idform)[0].reset();
+            $(".modal").hide();
             if (confirm(response.success + " " + response.message)) {
                 location.href = response.location;
             }
         },
         error: function (xhr, status, error) {
-            console.log(error);
-            console.log(status);
-            console.log(xhr);
+            if (xhr.status == 422) {
+                var message =
+                    "<strong>Whoops!</strong> There were some problems with your input.<br><br>" +
+                    "<ul>";
+                $.each(xhr.responseJSON.errors, function (key, option) {
+                    message += "<li>" + option + "</li>";
+                });
+                message += "</ul>";
+                $(".alert").removeClass("d-none");
+                $(".alert").html(message);
+            } else {
+                console.log(error);
+                console.log(status);
+                console.log(xhr);
+            }
         },
     });
 }
