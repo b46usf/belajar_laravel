@@ -42,13 +42,14 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permission = Permission::get();
-        $pages      = Pages::get();
-        if($permission->count() > 0) { 
-            $data   =   $permission;
-        } else {
-            $data   =   $pages;
-        }
+        $pages  = Pages::get();
+        $data   =   $pages;
+        // $permission = Permission::get();
+        // if($permission->count() > 0) { 
+        //     $data   =   $permission;
+        // } else {
+        //     $data   =   $pages;
+        // }
         return view('pages.formRoles',compact('data'));
     }
     

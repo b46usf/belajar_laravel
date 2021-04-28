@@ -53,7 +53,7 @@ function save(idform) {
         .find("input, select, textarea")
         .attr("readonly", "readonly");
     $(".btn-save").html(
-        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">&nbsp;</span>Loading...'
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">&nbsp;</span> Loading...'
     );
     $(".btn").prop("disabled", true);
     $.ajax({
@@ -69,6 +69,9 @@ function save(idform) {
         success: function (response) {
             $("#" + idform)[0].reset();
             $(".modal").modal("hide");
+            $(".btn-save").removeClass("btn-primary");
+            $(".btn-save").addClass("btn-success");
+            $(".btn-save").html('<i class="fa fa-check"></i> success!');
             if (response.success == "Error") {
                 $(".alert").addClass("alert-warning");
             } else {
