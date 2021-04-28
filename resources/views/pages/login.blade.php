@@ -1,7 +1,7 @@
 @extends('template.mainAuth')
 @section('content')
     <div class="container">
-        <div class="col-md-4 offset-md-4 mt-5">
+        <div class="col-md-6 offset-md-3 mt-5">
             <div class="card">
                 <div class="card-header">
                     <h3 class="text-center">Form Login</h3>
@@ -11,7 +11,7 @@
                 <div class="card-body">
                     @if(session('errors'))
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            Something it's wrong:
+                        <strong>Whoops!</strong> There were some problems with your input:
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             <ul>
                             @foreach ($errors->all() as $error)
