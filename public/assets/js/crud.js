@@ -75,8 +75,13 @@ function save(idform) {
                     message += "<li>" + option + "</li>";
                 });
                 message += "</ul>";
+                message +=
+                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
                 $(".alert").removeClass("d-none");
                 $(".alert").html(message);
+                $(".alert").on("closed.bs.alert", function (event) {
+                    location.reload();
+                });
             } else {
                 console.log(error);
                 console.log(status);
