@@ -7,7 +7,7 @@
         <h2>Form Roles Management</h2>
       </div>
       <div class="card-body">
-        <div class="d-none alert alert-warning alert-dismissible fade show" role="alert"></div>
+        <div class="alert alert-dismissible fade show" role="alert"></div>
         <form id="fromRoles" action="/roles" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-12">
