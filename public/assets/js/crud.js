@@ -49,6 +49,13 @@ function save(idform) {
     } else {
         dataParam.append("_method", "POST");
     }
+    $("#" + idform)
+        .find("input, select, textarea")
+        .attr("readonly", "readonly");
+    $(".btn-save").html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">&nbsp;</span>Loading...'
+    );
+    $(".btn").prop("disabled", true);
     $.ajax({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
