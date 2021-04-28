@@ -70,11 +70,17 @@ class RoleController extends Controller
             'permission.required'   => 'Silakan pilih permission',
         ]);
     
-        // $role = Role::create(['name' => $request->input('name')]);
-        // $role->syncPermissions($request->input('permission'));
+        $permissions = $request->input('permission');
     
-        // return redirect()->route('roles.index')
-        //                 ->with('success','Role created successfully');
+        foreach ($permissions as $permission) {
+            Permission::create(['name' => $permission]);
+        }
+
+        $role = Role::create(['name' => $request->input('inputName')]);
+        $role->syncPermissions($request->input('permission'));
+    
+        $response   = array('status' => 200,'message' => 'Role created successfully.','success' => 'OK','location' => '/roles/index');
+        echo json_encode($response);
     }
     public function addPages(Request $request)
     {

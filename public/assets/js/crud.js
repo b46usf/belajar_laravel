@@ -292,19 +292,12 @@ $(document).ready(function () {
         $(".btn-save").addClass("btn-edit");
         $(".btn-save").text("Edit");
     }
-    // if (urLoc==='' || urLoc===undefined || urLoc=='undefined') {
-    //     var extensions  = { "sFilter": "dataTables_filter text-right" };
-    //     $.extend($.fn.dataTableExt.oStdClasses, extensions);
-    //     var table       =   $('.table-responsive').find('.table');
-    //     viewTables(table);
-    // }
 });
 
 $("a").click(function (event) {
     event.preventDefault();
     if ($(this).text() == "Edit") {
         if ($(this).data("type") == "editCustomer") {
-            //location.href    =   $(this).data('action')+'?action='+$(this).data('type')+'&id='+$(this).data('id');
             location.href = $(this).data("id") + "/" + $(this).data("action");
         }
     } else if ($(this).text() == "Delete") {
