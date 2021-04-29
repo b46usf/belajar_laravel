@@ -1,5 +1,14 @@
 @extends('layout.backEnd')
 @section('container')
+@php
+if (Route::current()->getName() == 'roles.edit') {
+  foreach($role as $key => $r) {
+    $valname = $r->name;
+  }
+} else {
+  $valname = '';
+}
+@endphp
 <div class="container mt-5">
   <div class="col-md-12 mt-5">
     <div class="card">
@@ -12,7 +21,7 @@
             <div class="row">
                 <div class="col-md-12">
                   <label for="inputName">Name Roles</label>
-                  <input type="text" class="form-control" id="inputName" name="inputName" placeholder="Name" required>
+                  <input type="text" class="form-control" id="inputName" name="inputName" placeholder="Name" value="{{$valname}}" required>
                   <div class="invalid-feedback">Masukan Name Roles.</div>
                 </div>
             </div><hr>
@@ -33,17 +42,51 @@
                 <tbody>
                 @if (count($data) > 0 )
                 @foreach ($data as $key => $pageRoles)
+                @php
+                if (Route::current()->getName() == 'roles.edit') {
+                  foreach ($permission as $value) {
+                    $explode  = explode("-",$value->name);
+                    $pages    = $explode[0];
+                    $roles    = $explode[1]; 
+                    if ($pageRoles->name==$pages) {
+                      if ($roles=='create') {
+                        $roleCreate = $value->id;
+                        $checked = in_array($roleCreate, $rolePermissions) ? 'checked' : false;
+                      }
+                      if ($roles=='read') {
+                        $roleRead = $value->id;
+                        $checked = in_array($roleRead, $rolePermissions) ? 'checked' : false;
+                      }
+                      if ($roles=='update') {
+                        $roleUpdate = $value->id;
+                        $checked = in_array($roleUpdate, $rolePermissions) ? 'checked' : false;
+                      }
+                      if ($roles=='delete') {
+                        $roleDelete = $value->id;
+                        $checked = in_array($roleDelete, $rolePermissions) ? 'checked' : false;
+                      }
+                    }
+                  }
+                } else {
+                  $roleCreate = $pageRoles->name.'-create';
+                  $roleRead   = $pageRoles->name.'-read';
+                  $roleUpdate = $pageRoles->name.'-update';
+                  $roleDelete = $pageRoles->name.'-delete';
+                  $checked = '';
+                }
+                @endphp
                 <tr>
                 <td>{{ $pageRoles->name }}</td>
                 <td><input type="checkbox" class="checkall" name="{{ $pageRoles->name }}-role-all" id="{{ $pageRoles->name }}-role-all" value="{{ $pageRoles->name }}-all"></td>
-                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $pageRoles->name }}-create"></td>
-                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $pageRoles->name }}-read"></td>
-                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $pageRoles->name }}-update"></td>
-                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $pageRoles->name }}-delete"></td>
+                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $roleCreate }}" {{$checked}}></td>
+                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $roleRead }}" {{$checked}}></td>
+                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $roleUpdate }}" {{$checked}}></td>
+                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $roleDelete }}" {{$checked}}></td>
                 </tr>
+                
                 @endforeach
                 @else
-                <tr><td colspan="5" align="center">Data Tidak Ditemukan</td></tr>
+                <tr><td colspan="6" align="center">Data Tidak Ditemukan</td></tr>
                 @endif
                 </tbody>
             </table>
