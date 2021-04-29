@@ -10,7 +10,7 @@
       <a href="#" data-action="/home"><< Back</a> || <a href="#" data-action="create">Add</a> || <a href="#" data-action="/roles/trash">Trashed</a>
         <div class="table-responsive">
           <table style="width: 100%;" id="tabroles" data-action="/roles/table" class="table table-md table-hover table-striped table-bordered">
-            <thead><tr>
+            <thead><tr class="text-center">
                 <th scope="col">No</th>
                 <th scope="col">Name</th>
                 <th scope="col">Action</th>
@@ -31,7 +31,7 @@
             </tr>
             @endforeach
             @else
-            <tr><td colspan="7" align="center">Data Tidak Ditemukan</td></tr>
+            <tr><td colspan="3" align="center">Data Tidak Ditemukan</td></tr>
             @endif
             </tbody>
           </table>

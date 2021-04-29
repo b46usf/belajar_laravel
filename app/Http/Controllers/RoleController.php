@@ -74,7 +74,10 @@ class RoleController extends Controller
         $permissions = $request->input('permission');
     
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            $check      = Permission::where('name','=',ucwords($permission));
+            if ($check->count() < 1) {
+                Permission::create(['name' => $permission]);
+            }
         }
 
         $role = Role::create(['name' => $request->input('inputName')]);
