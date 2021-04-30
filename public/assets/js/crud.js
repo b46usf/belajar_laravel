@@ -45,6 +45,7 @@ function save(idform) {
         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">&nbsp;</span> Loading...'
     );
     $(".btn").prop("disabled", true);
+    $("form input").prop("disabled", true);
     $.ajax({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
