@@ -118,16 +118,16 @@ class RoleController extends Controller
     {
         $this->validate($request, 
         [
-            'inputName'     => 'required|unique:roles,name',
+            'inputName'     => 'required',
             'permission'    => 'required',
         ],
         [
-            'inputName.unique'      => 'Nama roles sudah ada',
+            'inputName.required'    => 'Nama roles harus di isi',
             'permission.required'   => 'Silakan pilih permission',
         ]);
     
         $role = Role::find($id);
-        $role->name = $request->input('name');
+        $role->name = $request->input('inputName');
         $role->save();
     
         $role->syncPermissions($request->input('permission'));
