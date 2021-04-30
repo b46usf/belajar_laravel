@@ -1,6 +1,8 @@
 $(".btn-save").click(function (event) {
     event.preventDefault();
     if ($(this).text() == "Edit") {
+        var route = $(this).closest("form").attr("action");
+        $("form").attr("action", route + "/update");
         $("form").find("input, select, textarea").prop("disabled", false);
         $(this).text("Save");
     } else {

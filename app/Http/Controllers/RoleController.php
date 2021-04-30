@@ -30,9 +30,8 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        $roles = Role::orderBy('id','DESC')->paginate(5); // dd($roles);
-        return view('pages.indexRoles',compact('roles'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        $roles = Role::orderBy('id','DESC')->paginate(5);
+        return view('pages.indexRoles',compact('roles'))->with('i', ($request->input('page', 1) - 1) * 5);
     }
     
     /**
@@ -43,13 +42,7 @@ class RoleController extends Controller
     public function create()
     {
         $pages  = Pages::get();
-        $data   =   $pages;
-        // $permission = Permission::get();
-        // if($permission->count() > 0) { 
-        //     $data   =   $permission;
-        // } else {
-        //     $data   =   $pages;
-        // }
+        $data   = $pages;
         return view('pages.formRoles',compact('data'));
     }
     
@@ -97,22 +90,6 @@ class RoleController extends Controller
         }
         echo json_encode($response);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $role = Role::find($id);
-        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
-            ->where("role_has_permissions.role_id",$id)
-            ->get();
-    
-        return view('roles.show',compact('role','rolePermissions'));
-    }
     
     /**
      * Show the form for editing the specified resource.
@@ -123,8 +100,8 @@ class RoleController extends Controller
     public function edit($id)
     {
         $data   = Pages::get();
-        $role   = Role::find($id)->get(); // dd($role);
-        $permission         = Permission::get(); // dd($permission);
+        $role   = Role::find($id)->get();
+        $permission         = Permission::get();
         $rolePermissions    = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')->all();
         return view('pages.formRoles',compact('data','role','permission','rolePermissions'));
@@ -139,9 +116,14 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'permission' => 'required',
+        $this->validate($request, 
+        [
+            'inputName'     => 'required|unique:roles,name',
+            'permission'    => 'required',
+        ],
+        [
+            'inputName.unique'      => 'Nama roles sudah ada',
+            'permission.required'   => 'Silakan pilih permission',
         ]);
     
         $role = Role::find($id);
@@ -149,9 +131,9 @@ class RoleController extends Controller
         $role->save();
     
         $role->syncPermissions($request->input('permission'));
-    
-        return redirect()->route('roles.index')
-                        ->with('success','Role updated successfully');
+
+        $response   = array('status' => 200,'message' => 'Role updated successfully.','success' => 'OK','location' => '/roles/index');
+        echo json_encode($response);
     }
     /**
      * Remove the specified resource from storage.
@@ -162,7 +144,7 @@ class RoleController extends Controller
     public function destroy($id)
     {
         DB::table("roles")->where('id',$id)->delete();
-        return redirect()->route('roles.index')
-                        ->with('success','Role deleted successfully');
+        $response   = array('status' => 200,'message' => 'Role deleted successfully.','success' => 'OK','location' => '/roles/index');
+        echo json_encode($response);
     }
 }
