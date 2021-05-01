@@ -29,13 +29,21 @@
               <td>{{ $usr->email }}</td>
               <td>{{ $usr->name }}</td>
               <td>
-                @if(!empty($usr->getRoleNames()))
-                    @foreach($usr->getRoleNames() as $v)
-                        <label class="badge badge-success">{{ $v }}</label>
-                    @endforeach
+                @if(empty($usr->getRoleNames()==false))
+                <span  class="badge bg-warning">Don't has role</span>
+                @else
+                  @foreach($usr->getRoleNames() as $v)
+                    <span  class="badge bg-success">{{ $v }}</span>
+                  @endforeach
                 @endif              
               </td>
-              <td>{{ ($usr->device_token=='') ? 'Belum Aktif':'Sudah Aktif' }}</td>
+              <td>
+              @if($usr->device_token=='')
+                <span  class="badge bg-danger">Belum Aktif</span>
+              @else
+                <span  class="badge bg-warning">Sudah Aktif</span>
+              @endif
+              </td>
               <td>
                 <a href="#" data-type="editCustomer" data-action="edit" data-id="{{ $usr->uniqID_user }}">Edit</a> ||
                 <a href="#" data-type="deleteCustomer" data-action="delete" data-id="{{ $usr->uniqID_user }}">Delete</a>

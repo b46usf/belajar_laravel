@@ -151,10 +151,12 @@ $(document).ready(function () {
     var getUrl = window.location;
     var urLoc = getUrl.pathname.split("/")[3];
     if (urLoc == "edit") {
-        $("form input").prop("disabled", true);
-        $(".btn-save").addClass("btn-edit");
-        $(".btn-save").text("Edit");
-        $(".btn-add").addClass("d-none");
+        if (getUrl.pathname.split("/")[1] != "user") {
+            $("form input").prop("disabled", true);
+            $(".btn-save").addClass("btn-edit");
+            $(".btn-save").text("Edit");
+            $(".btn-add").addClass("d-none");
+        }
     }
 });
 
