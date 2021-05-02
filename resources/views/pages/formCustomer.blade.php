@@ -1,6 +1,6 @@
 @extends('layout.backEnd')
 @section('container')
-<div class="container mt-5">
+<div class="container content mt-5">
 <!--Tanpa Jquery-->
 @php
 if (count($konsumen) > 0 ) {
