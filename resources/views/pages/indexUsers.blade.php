@@ -29,19 +29,19 @@
               <td>{{ $usr->email }}</td>
               <td>{{ $usr->name }}</td>
               <td>
-                @if(empty($usr->getRoleNames()==false))
-                <span  class="badge bg-warning">Don't has role</span>
-                @else
-                  @foreach($usr->getRoleNames() as $v)
-                    <span  class="badge bg-success">{{ $v }}</span>
-                  @endforeach
-                @endif              
+              @if(count($usr->getRoleNames()) < 1)
+                  <span  class="badge bg-warning">Don't has role</span>
+              @else
+                @foreach($usr->getRoleNames() as $v)
+                  <span  class="badge bg-success">{{ $v }}</span>
+                @endforeach
+              @endif 
               </td>
               <td>
               @if($usr->device_token=='')
                 <span  class="badge bg-danger">Belum Aktif</span>
               @else
-                <span  class="badge bg-warning">Sudah Aktif</span>
+                <span  class="badge bg-success">Sudah Aktif</span>
               @endif
               </td>
               <td>

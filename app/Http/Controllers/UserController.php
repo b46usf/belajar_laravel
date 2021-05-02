@@ -14,15 +14,6 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     
     /**
      * Display a listing of the resource.
@@ -66,12 +57,11 @@ class UserController extends Controller
             'inputroles.required'    => 'Masukan Pilihan Roles',
             'inputactivated.required'   => 'Masukan Pilihan Activated',
         ]);
-        $user = User::where('uniqID_user','=',$id);
-        $user->update(['device_token'=>$request->token]);
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
-        $user->assignRole($request->input('inputroles'));
+        $user = User::where('uniqID_user','=',$id)->first();
+        $user->assignRole($request->inputroles);
+        $update = User::where('uniqID_user','=',$id)->update(['device_token'=>$request->token]);
 
-        $response   = array('status' => 200,'message' => 'User updated successfully.','success' => 'OK','location' => '/pages/indexUsers');
+        $response   = array('status' => 200,'message' => 'User updated successfully.','success' => 'OK','location' => '/user/index');
         echo json_encode($response);
     }
     
