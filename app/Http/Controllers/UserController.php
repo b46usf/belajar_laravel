@@ -47,9 +47,14 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
+        $this->validate($request,
+        [
             'inputroles' => 'required',
             'inputactivated' => 'required',
+        ],
+        [
+            'inputroles.required'    => 'Masukan Pilihan Roles',
+            'inputactivated.required'   => 'Masukan Pilihan Activated',
         ]);
     
         $input = $request->all();

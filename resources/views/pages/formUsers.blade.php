@@ -8,6 +8,7 @@
         <h3>Form User Management</h3>
       </div>
       <div class="card-body">
+      <div class="alert alert-dismissible fade show" role="alert"></div>
         <form id="fromUser" action="/user" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
           <div class="row">
             <div class="col-md-12">
