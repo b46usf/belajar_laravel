@@ -1,3 +1,19 @@
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+var firebaseConfig = {
+    apiKey: "AIzaSyDz2XnmikLRO8-OtKDtyamKtXw9siYoX4g",
+    authDomain: "learnapi-2f9e0.firebaseapp.com",
+    projectId: "learnapi-2f9e0",
+    storageBucket: "learnapi-2f9e0.appspot.com",
+    messagingSenderId: "43647748479",
+    appId: "1:43647748479:web:65b36ef89d8d5b80a7724a",
+    measurementId: "G-194896LJQN",
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
+const messaging = firebase.messaging();
+
 $(".btn-save").click(function (event) {
     event.preventDefault();
     if ($(this).text() == "Edit") {
@@ -22,18 +38,20 @@ function validateForm(event, form) {
         event.stopPropagation();
     } else {
         event.preventDefault();
-        var device_token = "";
         if (window.location.pathname.split("/")[1] == "user") {
             if ($(".btn-check:checked", form).val() == "active") {
-                device_token = initFirebaseMessagingRegistration();
+                initFirebaseMessagingRegistration(form.attr("id"));
+            } else {
+                save(form.attr("id"));
             }
+        } else {
+            save(form.attr("id"));
         }
-        save(form.attr("id"), device_token);
     }
     form.addClass("was-validated");
 }
 
-function save(idform, device_token) {
+function save(idform) {
     var getUrl = window.location;
     var urLoc = getUrl.pathname.split("/")[3];
     var action = $("#" + idform).attr("action");
@@ -41,7 +59,6 @@ function save(idform, device_token) {
     if (urLoc == "edit") {
         action = action + "/" + getUrl.pathname.split("/")[2];
         dataParam.append("_method", "PATCH");
-        dataParam.append("token", device_token);
     } else {
         dataParam.append("_method", "POST");
     }
@@ -195,14 +212,83 @@ $(".checkall").click(function () {
     $("td input:checkbox", row).prop("checked", this.checked);
 });
 
-function initFirebaseMessagingRegistration() {
+function initFirebaseMessagingRegistration(idform) {
+    var action = $("#" + idform).attr("action");
+    var dataParam = new FormData($("#" + idform)[0]);
+    action = action + "/" + window.location.pathname.split("/")[2];
+    dataParam.append("_method", "PATCH");
     messaging
         .requestPermission()
         .then(function () {
             return messaging.getToken();
         })
         .then(function (token) {
-            var token = token;
+            $("#" + idform)
+                .find("input, select, textarea")
+                .attr("readonly", "readonly");
+            $(".btn-save").html(
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">&nbsp;</span> Loading...'
+            );
+            $(".btn").prop("disabled", true);
+            $("form input").prop("disabled", true);
+            dataParam.append("token", token);
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                url: action,
+                data: dataParam,
+                type: "post",
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    $("#" + idform)[0].reset();
+                    $(".modal").modal("hide");
+                    $(".btn-save").removeClass("btn-primary");
+                    $(".btn-save").addClass("btn-success");
+                    $(".btn-save").html('<i class="fa fa-check"></i> success!');
+                    if (response.success == "Error") {
+                        $(".alert").addClass("alert-warning");
+                    } else {
+                        $(".alert").addClass("alert-success");
+                    }
+                    var message =
+                        "<strong>" +
+                        response.success +
+                        "!</strong> " +
+                        response.message +
+                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    $(".alert").html(message);
+                    $(".alert").on("closed.bs.alert", function (event) {
+                        location.href = response.location;
+                    });
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 422) {
+                        var message =
+                            "<strong>Whoops!</strong> There were some problems with your input.<br><br>" +
+                            "<ul>";
+                        $.each(xhr.responseJSON.errors, function (key, option) {
+                            message += "<li>" + option + "</li>";
+                        });
+                        message += "</ul>";
+                        message +=
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                        $(".alert").addClass("alert-warning");
+                        $(".alert").html(message);
+                        $(".alert").on("closed.bs.alert", function (event) {
+                            location.reload();
+                        });
+                    } else {
+                        console.log(error);
+                        console.log(status);
+                        console.log(xhr);
+                    }
+                },
+            });
         })
         .catch(function (err) {
             var message =

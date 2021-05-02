@@ -66,10 +66,8 @@ class UserController extends Controller
             'inputroles.required'    => 'Masukan Pilihan Roles',
             'inputactivated.required'   => 'Masukan Pilihan Activated',
         ]);
-    
-        $input = $request->all();
-        $user = User::where('uniqID_user','=',$id)->get();
-        $user->update($input);
+        $user = User::where('uniqID_user','=',$id);
+        $user->update(['device_token'=>$request->token]);
         DB::table('model_has_roles')->where('model_id',$id)->delete();
         $user->assignRole($request->input('inputroles'));
 
@@ -86,7 +84,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         User::where('uniqID_user','=',$id)->delete();
-        
+
         $response   = array('status' => 200,'message' => 'User deleted successfully.','success' => 'OK','location' => '/pages/indexUsers');
         echo json_encode($response);
     }
