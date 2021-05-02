@@ -22,12 +22,18 @@ function validateForm(event, form) {
         event.stopPropagation();
     } else {
         event.preventDefault();
-        save(form.attr("id"));
+        var device_token = "";
+        if (window.location.pathname.split("/")[1] == "user") {
+            if ($(".btn-check:checked", form).val() == "active") {
+                device_token = initFirebaseMessagingRegistration();
+            }
+        }
+        save(form.attr("id"), device_token);
     }
     form.addClass("was-validated");
 }
 
-function save(idform) {
+function save(idform, device_token) {
     var getUrl = window.location;
     var urLoc = getUrl.pathname.split("/")[3];
     var action = $("#" + idform).attr("action");
@@ -35,6 +41,7 @@ function save(idform) {
     if (urLoc == "edit") {
         action = action + "/" + getUrl.pathname.split("/")[2];
         dataParam.append("_method", "PATCH");
+        dataParam.append("token", device_token);
     } else {
         dataParam.append("_method", "POST");
     }
@@ -186,4 +193,35 @@ $(".checkall").click(function () {
     var idRole = $(this).attr("id");
     var row = $("#" + idRole).closest("tr");
     $("td input:checkbox", row).prop("checked", this.checked);
+});
+
+function initFirebaseMessagingRegistration() {
+    messaging
+        .requestPermission()
+        .then(function () {
+            return messaging.getToken();
+        })
+        .then(function (token) {
+            var token = token;
+        })
+        .catch(function (err) {
+            var message =
+                "<strong>User Activated Token Error " +
+                err +
+                '!</strong> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+            $(".alert").addClass("alert-danger");
+            $(".alert").html(message);
+            $(".alert").on("closed.bs.alert", function (event) {
+                location.reload();
+            });
+        });
+}
+
+messaging.onMessage(function (payload) {
+    const noteTitle = payload.notification.title;
+    const noteOptions = {
+        body: payload.notification.body,
+        icon: payload.notification.icon,
+    };
+    new Notification(noteTitle, noteOptions);
 });

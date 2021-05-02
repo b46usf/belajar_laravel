@@ -24,9 +24,9 @@
                 </div>
                 <div class="col-md-6 mt-2">
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="inputactivated" id="btnradio1" autocomplete="off" checked>
+                        <input type="radio" class="btn-check" name="inputactivated" id="btnradio1" value="active" autocomplete="off">
                         <label class="btn btn-outline-primary" for="btnradio1">Activated</label>
-                        <input type="radio" class="btn-check" name="inputactivated" id="btnradio2" autocomplete="off">
+                        <input type="radio" class="btn-check" name="inputactivated" id="btnradio2" value="deactive" autocomplete="off">
                         <label class="btn btn-outline-primary" for="btnradio2">DeAftivated</label>
                         </div>
                     <div class="invalid-feedback">Masukan Pilihan Activated.</div>

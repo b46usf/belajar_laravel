@@ -30,16 +30,17 @@
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   var firebaseConfig = {
-    apiKey: "AIzaSyDz2XnmikLRO8-OtKDtyamKtXw9siYoX4g",
-    authDomain: "learnapi-2f9e0.firebaseapp.com",
-    projectId: "learnapi-2f9e0",
-    storageBucket: "learnapi-2f9e0.appspot.com",
-    messagingSenderId: "43647748479",
-    appId: "1:43647748479:web:65b36ef89d8d5b80a7724a",
-    measurementId: "G-194896LJQN"
+      apiKey: "AIzaSyDz2XnmikLRO8-OtKDtyamKtXw9siYoX4g",
+      authDomain: "learnapi-2f9e0.firebaseapp.com",
+      projectId: "learnapi-2f9e0",
+      storageBucket: "learnapi-2f9e0.appspot.com",
+      messagingSenderId: "43647748479",
+      appId: "1:43647748479:web:65b36ef89d8d5b80a7724a",
+      measurementId: "G-194896LJQN"
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
+  const messaging = firebase.messaging();
 </script>
 </html>

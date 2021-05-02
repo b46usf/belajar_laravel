@@ -14,7 +14,17 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-/**
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -58,20 +68,13 @@ class UserController extends Controller
         ]);
     
         $input = $request->all();
-        if(!empty($input['password'])){ 
-            $input['password'] = Hash::make($input['password']);
-        }else{
-            $input = Arr::except($input,array('password'));    
-        }
-    
-        $user = User::find($id);
+        $user = User::where('uniqID_user','=',$id)->get();
         $user->update($input);
         DB::table('model_has_roles')->where('model_id',$id)->delete();
-    
-        $user->assignRole($request->input('roles'));
-    
-        return redirect()->route('users.index')
-                        ->with('success','User updated successfully');
+        $user->assignRole($request->input('inputroles'));
+
+        $response   = array('status' => 200,'message' => 'User updated successfully.','success' => 'OK','location' => '/pages/indexUsers');
+        echo json_encode($response);
     }
     
     /**
@@ -82,8 +85,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
-        return redirect()->route('users.index')
-                        ->with('success','User deleted successfully');
+        User::where('uniqID_user','=',$id)->delete();
+        
+        $response   = array('status' => 200,'message' => 'User deleted successfully.','success' => 'OK','location' => '/pages/indexUsers');
+        echo json_encode($response);
     }
 }
