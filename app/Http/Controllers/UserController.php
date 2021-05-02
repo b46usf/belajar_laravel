@@ -14,7 +14,19 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    function __construct()
+    {
+        $this->middleware('permission:Users-create', ['only' => ['create','store']]);
+        $this->middleware('permission:Users-read', ['only' => ['index']]);
+        $this->middleware('permission:Users-update', ['only' => ['edit','update']]);
+        $this->middleware('permission:Users-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -58,6 +70,7 @@ class UserController extends Controller
             'inputactivated.required'   => 'Masukan Pilihan Activated',
         ]);
         $user = User::where('uniqID_user','=',$id)->first();
+        DB::table('model_has_roles')->join('users', 'users.id', '=', 'model_has_roles.model_id')->where('users.uniqID_user',$id)->delete();
         $user->assignRole($request->inputroles);
         $update = User::where('uniqID_user','=',$id)->update(['device_token'=>$request->token]);
 

@@ -121,7 +121,7 @@ class AuthController extends Controller
             $insertRekening =   $user->eloRek()->create($dataID);
             $insertImage    =   $user->eloCustImg()->create($dataID);
             $simpan = $user->save();
-            $user->assignRole('user');
+            $user->assignRole('customer');
     
             if($simpan){
                 Session::flash('success', 'Register berhasil! Silahkan login untuk mengakses data');
