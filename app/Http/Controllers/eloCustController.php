@@ -8,21 +8,35 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\eloCust;
 use App\Models\eloAdr;
 use App\Models\eloRek;
 use App\Models\eloCustImg;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class eloCustController extends Controller {
 
     public function index(Request $request) {
         $currentURL = $request->segment(count(request()->segments()));
         // mengambil data konsumen dengan eloquent ORM
+        $id     = Auth::user()->uniqID_user;
+        $akses  = DB::table('model_has_roles')->join('users', 'users.id', '=', 'model_has_roles.model_id')->where('users.uniqID_user',$id)->get(); 
+        foreach ($akses as $key => $value) {
+            if ($value->role_id==2) {
+                $where = [
+                    'uniqID_Customer','=',$value->uniqID_user
+                ];
+            } else {
+                $where = [];
+            }
+        }
         if ($currentURL=='trash') {
-            $konsumen   = eloCust::with('eloAdr','eloRek','eloCustImg')->where('status_delete',1)->onlyTrashed()->get();
+            $konsumen   = eloCust::with('eloAdr','eloRek','eloCustImg')->where([['status_delete','=','1'],$where])->onlyTrashed()->get();
             $laman      = 'pages/trashedCustomer';
         } else {
-            $konsumen   = eloCust::with('eloAdr','eloRek','eloCustImg')->where('status_delete',0)->get();
+            $konsumen   = eloCust::with('eloAdr','eloRek','eloCustImg')->where([['status_delete','=','0'],$where])->get();
             $laman      = 'pages/indexCustomer';
         }
         // mengubah ke array
