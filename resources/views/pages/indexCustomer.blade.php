@@ -7,7 +7,7 @@
         <h3>Data Customer</h3>
       </div>
       <div class="card-body">
-      <a href="#" data-action="/home"><< Back</a> <!--|| <a href="#" data-action="create">Add</a>--> || <a href="#" data-action="/customer/trash">Trashed</a>
+      <a href="#" data-action="/home"><< Back</a> @can('Customers-create') || <a href="#" data-action="create">Add</a> || <a href="#" data-action="/customer/trash">Trashed</a>@endcan
         <div class="table-responsive">
           <table style="width: 100%;" id="tabCustomer" data-action="/customer/table" class="table table-md table-hover table-striped table-bordered">
             <thead><tr>
@@ -27,8 +27,11 @@
               <td>{{ $k->email_customer }}</td>
               <td>{{ $k->nama_customer }}</td>
               <td>
-                <a href="#" data-type="editCustomer" data-action="edit" data-id="{{ $k->uniqID_Customer }}">Edit</a> ||
+                <a href="#" data-type="editCustomer" data-action="edit" data-id="{{ $k->uniqID_Customer }}">Edit</a> 
+                @can('Customers-create')
+                ||
                 <a href="#" data-type="deleteCustomer" data-action="delete" data-id="{{ $k->uniqID_Customer }}">Delete</a>
+                @endcan
               </td>
             </tr>
             @endforeach

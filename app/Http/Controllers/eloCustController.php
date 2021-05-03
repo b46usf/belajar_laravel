@@ -18,6 +18,14 @@ use Spatie\Permission\Models\Role;
 
 class eloCustController extends Controller {
 
+    function __construct()
+    {
+        $this->middleware('permission:Customers-create', ['only' => ['create','store']]);
+        $this->middleware('permission:Customers-read', ['only' => ['index']]);
+        $this->middleware('permission:Customers-update', ['only' => ['edit','update']]);
+        $this->middleware('permission:Customers-delete', ['only' => ['destroy']]);
+    }
+
     public function index(Request $request) {
         $currentURL = $request->segment(count(request()->segments()));
         // mengambil data konsumen dengan eloquent ORM
@@ -25,18 +33,27 @@ class eloCustController extends Controller {
         $akses  = DB::table('model_has_roles')->join('users', 'users.id', '=', 'model_has_roles.model_id')->where('users.uniqID_user',$id)->get(); 
         foreach ($akses as $key => $value) {
             if ($value->role_id==2) {
-                $where = [
+                $whereid = [
                     'uniqID_Customer','=',$value->uniqID_user
                 ];
             } else {
-                $where = [];
+                $whereid = null;
             }
         }
+        $wheredeltrue   = ['status_delete','=','1'];
+        $wheredelfalse  = ['status_delete','=','0'];
+        if ($whereid==null) {
+            $wheretrash = [$wheredeltrue];
+            $where      = [$wheredelfalse];
+        } else {
+            $wheretrash = [$wheredeltrue,$whereid];
+            $where      = [$wheredelfalse,$whereid];
+        }
         if ($currentURL=='trash') {
-            $konsumen   = eloCust::with('eloAdr','eloRek','eloCustImg')->where([['status_delete','=','1'],$where])->onlyTrashed()->get();
+            $konsumen   = eloCust::with('eloAdr','eloRek','eloCustImg')->where($wheretrash)->onlyTrashed()->get();
             $laman      = 'pages/trashedCustomer';
         } else {
-            $konsumen   = eloCust::with('eloAdr','eloRek','eloCustImg')->where([['status_delete','=','0'],$where])->get();
+            $konsumen   = eloCust::with('eloAdr','eloRek','eloCustImg')->where($where)->get();
             $laman      = 'pages/indexCustomer';
         }
         // mengubah ke array
