@@ -32,7 +32,7 @@
                     <div class="invalid-feedback">Masukan Pilihan Activated.</div>
                 </div>
                 <div class="col-md-12 mt-2">
-                  <a href="#" data-action="/user/index" class="btn btn-primary btn-back">Back</a>
+                  <a href="#" data-action="/users/index" class="btn btn-primary btn-back">Back</a>
                   <button type="button" class="btn btn-primary btn-save">Save</button>
                 </div>
               </div>

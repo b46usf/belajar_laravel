@@ -81,7 +81,7 @@ if (count($konsumen) > 0 ) {
                   <div class="invalid-feedback">Masukan Bank.</div>
                 </div>
                 <div class="col-md-12 mt-2">
-                  <a href="#" data-action="/customer/index" class="btn btn-primary btn-back">Back</a>
+                  <a href="#" data-action="/customers/index" class="btn btn-primary btn-back">Back</a>
                   <button type="button" class="btn btn-primary btn-save">Save</button>
                 </div>
               </div>
