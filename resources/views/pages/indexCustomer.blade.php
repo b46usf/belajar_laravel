@@ -27,11 +27,12 @@
               <td>{{ $k->email_customer }}</td>
               <td>{{ $k->nama_customer }}</td>
               <td>
-                <a href="#" data-type="editCustomer" data-action="edit" data-id="{{ $k->uniqID_Customer }}">Edit</a> 
-                @can('Customers-create')
-                ||
+              @can('Customers-update')
+                <a href="#" data-type="editCustomer" data-action="edit" data-id="{{ $k->uniqID_Customer }}">Edit</a>
+              @endcan
+              @can('Customers-delete')
                 <a href="#" data-type="deleteCustomer" data-action="delete" data-id="{{ $k->uniqID_Customer }}">Delete</a>
-                @endcan
+              @endcan
               </td>
             </tr>
             @endforeach
