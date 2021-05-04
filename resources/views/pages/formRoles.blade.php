@@ -2,9 +2,7 @@
 @section('container')
 @php
 if (Route::current()->getName() == 'roles.edit') {
-  foreach($role as $key => $r) {
-    $valname = $r->name;
-  }
+  $valname = $role['name'];
 } else {
   $valname = '';
 }
@@ -42,28 +40,28 @@ if (Route::current()->getName() == 'roles.edit') {
                 <tbody>
                 @if (count($data) > 0 )
                 @foreach ($data as $key => $pageRoles)
-                @php
+                @php 
                 if (Route::current()->getName() == 'roles.edit') {
                   foreach ($permission as $value) {
                     $explode  = explode("-",$value->name);
                     $pages    = $explode[0];
-                    $roles    = $explode[1]; 
+                    $roles    = $explode[1];
                     if ($pageRoles->name==$pages) {
                       if ($roles=='create') {
-                        $roleCreate = $value->id;
-                        $checked = in_array($roleCreate, $rolePermissions) ? 'checked' : false;
+                        $roleCreate   = $value->id;
+                        $checkCreate  = in_array($roleCreate, $rolePermissions) ? 'checked' : false;
                       }
                       if ($roles=='read') {
-                        $roleRead = $value->id;
-                        $checked = in_array($roleRead, $rolePermissions) ? 'checked' : false;
+                        $roleRead   = $value->id;
+                        $checkRead  = in_array($roleRead, $rolePermissions) ? 'checked' : false;
                       }
                       if ($roles=='update') {
-                        $roleUpdate = $value->id;
-                        $checked = in_array($roleUpdate, $rolePermissions) ? 'checked' : false;
+                        $roleUpdate   = $value->id;
+                        $checkUpdate  = in_array($roleUpdate, $rolePermissions) ? 'checked' : false;
                       }
                       if ($roles=='delete') {
-                        $roleDelete = $value->id;
-                        $checked = in_array($roleDelete, $rolePermissions) ? 'checked' : false;
+                        $roleDelete   = $value->id;
+                        $checkDelete  = in_array($roleDelete, $rolePermissions) ? 'checked' : false;
                       }
                     }
                   }
@@ -72,16 +70,16 @@ if (Route::current()->getName() == 'roles.edit') {
                   $roleRead   = $pageRoles->name.'-read';
                   $roleUpdate = $pageRoles->name.'-update';
                   $roleDelete = $pageRoles->name.'-delete';
-                  $checked = '';
+                  $checkCreate = ''; $checkRead = ''; $checkUpdate = ''; $checkDelete = '';
                 }
                 @endphp
                 <tr>
                 <td>{{ $pageRoles->name }}</td>
                 <td><input type="checkbox" class="checkall" name="{{ $pageRoles->name }}-role-all" id="{{ $pageRoles->name }}-role-all" value="{{ $pageRoles->name }}-all"></td>
-                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $roleCreate }}" {{$checked}}></td>
-                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $roleRead }}" {{$checked}}></td>
-                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $roleUpdate }}" {{$checked}}></td>
-                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $roleDelete }}" {{$checked}}></td>
+                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $roleCreate }}" {{$checkCreate}}></td>
+                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $roleRead }}" {{$checkRead}}></td>
+                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $roleUpdate }}" {{$checkUpdate}}></td>
+                <td><input type="checkbox" name="permission[]" id="permission[]" value="{{ $roleDelete }}" {{$checkDelete}}></td>
                 </tr>
                 
                 @endforeach
